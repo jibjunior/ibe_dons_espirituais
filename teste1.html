@@ -236,6 +236,13 @@
             .no-print { display: none !important; }
             #results { display: block !important; border-top: none; margin-top: 0; padding-top: 0; }
             .other-gifts { grid-template-columns: 1fr 1fr 1fr; }
+            
+            /* Força a seção de explicações para a próxima página */
+            .definitions-section {
+                page-break-before: always;
+                break-before: page;
+                border: none;
+            }
         }
     </style>
 </head>
@@ -243,10 +250,6 @@
 
 <div class="container" id="main-container">
     <h1 class="no-print">Teste de Dons Espirituais I</h1>
-    
-    <div class="instructions no-print" style="background-color: #fca5a5; color: #7f1d1d; font-weight: bold;">
-        [MODO DE TESTE ATIVO] - As respostas já estão preenchidas para você testar rapidamente.
-    </div>
 
     <form id="gifts-form" class="no-print">
         
@@ -292,7 +295,7 @@
         <button onclick="window.print()" class="download-btn no-print">🖨️ Imprimir / Salvar como PDF</button>
 
         <div class="definitions-section">
-            <h3 style="text-align: center; margin-top: 0;">Parte 3 – Explicação de alguns dos dons Espirituais</h3>
+            <h3 style="text-align: center; margin-top: 0;">Explicação de alguns dos dons Espirituais</h3>
             
             <div class="def-item">
                 <strong>1. Apóstolo</strong>
@@ -396,21 +399,19 @@
         document.getElementById(cardId).classList.remove('error-highlight');
     };
 
-    // Gerar questões COM RESPOSTAS PRÉ-PREENCHIDAS PARA TESTE RÁPIDO
+    // Gerar questões
     questionsText.forEach((q, index) => {
         const questionNum = index + 1;
-        const randomVal = Math.floor(Math.random() * 4); // Gera aleatório entre 0 e 3
-        
         const card = document.createElement('div');
         card.id = `card-${index}`;
         card.className = 'question-card';
         card.innerHTML = `
             <div class="question-text">${questionNum}. ${q}</div>
             <div class="options-group">
-                <label class="radio-label">0 <input type="radio" name="q${index}" value="0" onchange="removerErro('card-${index}')" ${randomVal === 0 ? 'checked' : ''}></label>
-                <label class="radio-label">1 <input type="radio" name="q${index}" value="1" onchange="removerErro('card-${index}')" ${randomVal === 1 ? 'checked' : ''}></label>
-                <label class="radio-label">2 <input type="radio" name="q${index}" value="2" onchange="removerErro('card-${index}')" ${randomVal === 2 ? 'checked' : ''}></label>
-                <label class="radio-label">3 <input type="radio" name="q${index}" value="3" onchange="removerErro('card-${index}')" ${randomVal === 3 ? 'checked' : ''}></label>
+                <label class="radio-label">0 <input type="radio" name="q${index}" value="0" onchange="removerErro('card-${index}')"></label>
+                <label class="radio-label">1 <input type="radio" name="q${index}" value="1" onchange="removerErro('card-${index}')"></label>
+                <label class="radio-label">2 <input type="radio" name="q${index}" value="2" onchange="removerErro('card-${index}')"></label>
+                <label class="radio-label">3 <input type="radio" name="q${index}" value="3" onchange="removerErro('card-${index}')"></label>
             </div>
         `;
         container.appendChild(card);
