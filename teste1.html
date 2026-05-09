@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Levantamento de Dons Espirituais I - v3</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>Levantamento de Dons Espirituais I</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -21,33 +20,56 @@
             color: var(--text-color);
             line-height: 1.6;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: #fff;
-            padding: 30px;
+            padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        h1, h2, h3 {
-            color: var(--primary-color);
-        }
-
+        h1, h2, h3 { color: var(--primary-color); }
+        
         h1 {
             text-align: center;
             border-bottom: 2px solid var(--secondary-color);
             padding-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            background-color: #eef2f7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .input-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
 
         .instructions, .legend {
             background-color: #eef2f7;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
         }
 
         .legend {
@@ -58,10 +80,9 @@
         .question-card {
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
             background: #fff;
-            transition: all 0.3s ease;
         }
 
         .question-card.error-highlight {
@@ -71,8 +92,8 @@
 
         .question-text {
             font-weight: 600;
-            margin-bottom: 15px;
-            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-size: 1.05em;
         }
 
         .options-group {
@@ -80,7 +101,7 @@
             flex-direction: row;
             justify-content: space-around;
             background-color: #f8fafc;
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
         }
 
@@ -89,15 +110,14 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            padding: 5px 15px;
-            border-radius: 4px;
+            padding: 5px 10px;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.1em;
         }
 
         input[type="radio"] {
             margin-top: 5px;
-            transform: scale(1.5);
+            transform: scale(1.3);
             cursor: pointer;
         }
 
@@ -111,153 +131,250 @@
             font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .submit-btn { background-color: var(--secondary-color); }
-        .download-btn { background-color: #10b981; margin-top: 20px; }
+        .download-btn { background-color: #10b981; margin-top: 15px; }
 
         #results {
             display: none;
-            margin-top: 40px;
+            margin-top: 30px;
+            padding-top: 20px;
             border-top: 2px dashed #ccc;
-            padding-top: 30px;
         }
 
-        /* Estilos do PDF */
-        #pdf-content {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
+        /* Área de Resultados Compacta para Print no Celular */
+        .resultado-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .resultado-header h2 {
+            color: #166534;
+            margin: 5px 0;
+            font-size: 1.4em;
+        }
+
+        .resultado-header p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9em;
         }
 
         .top-gifts {
             background-color: #f0fdf4;
             border: 2px solid #bbf7d0;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .top-gifts h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+            text-align: center;
+            color: #166534;
         }
 
         .gift-result-top {
-            font-size: 1.5em;
+            font-size: 1.1em;
             color: #166534;
             font-weight: bold;
-            margin: 10px 0;
-            padding: 15px;
+            margin: 5px 0;
+            padding: 8px;
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-left: 5px solid #22c55e;
+            border-radius: 6px;
+            border-left: 4px solid #22c55e;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .other-gifts {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 6px;
+            margin-bottom: 15px;
         }
 
         .gift-result-other {
-            font-size: 1em;
+            font-size: 0.85em;
             color: #475569;
-            padding: 10px;
+            padding: 6px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 4px;
+            text-align: center;
+        }
+
+        .pastor-note {
+            font-size: 0.9em;
+            color: #b45309;
+            background: #fef3c7;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .definitions-section {
             background-color: #f8fafc;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            margin-top: 30px;
-        }
-
-        .def-item {
-            margin-bottom: 15px;
-        }
-        
-        .def-item strong {
-            color: var(--primary-color);
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .pastor-note {
-            margin-top: 20px;
-            font-size: 1.1em;
-            color: #b45309;
-            background: #fef3c7;
             padding: 15px;
             border-radius: 8px;
-            font-weight: bold;
-            text-align: center;
+            border: 1px solid #cbd5e1;
+            font-size: 0.9em;
         }
 
-        .no-print { display: block; }
+        .def-item { margin-bottom: 12px; }
+        .def-item strong { color: var(--primary-color); display: block; }
+        .def-item ul { margin-top: 5px; padding-left: 20px; }
+
+        /* Estilos específicos para impressão / Salvar como PDF */
+        @media print {
+            body { background: #fff; padding: 0; }
+            .container { box-shadow: none; padding: 0; }
+            .no-print { display: none !important; }
+            #results { display: block !important; border-top: none; margin-top: 0; padding-top: 0; }
+            .other-gifts { grid-template-columns: 1fr 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container" id="main-container">
-    <h1>Teste de Dons Espirituais I</h1>
+    <h1 class="no-print">Teste de Dons Espirituais I</h1>
     
-    <div class="instructions">
-        <strong>Atenção:</strong> Esta versão está com respostas automáticas preenchidas para facilitar o seu teste da plataforma.
+    <div class="instructions no-print" style="background-color: #fca5a5; color: #7f1d1d; font-weight: bold;">
+        [MODO DE TESTE ATIVO] - As respostas já estão preenchidas para você testar rapidamente.
     </div>
 
-    <form id="gifts-form">
+    <form id="gifts-form" class="no-print">
+        
+        <div class="input-group">
+            <label for="nome-usuario">Qual é o seu nome?</label>
+            <input type="text" id="nome-usuario" placeholder="Digite seu nome completo aqui..." required>
+        </div>
+
+        <div class="legend">
+            <strong>LEGENDA DE PONTUAÇÃO:</strong><br>
+            <strong>3</strong> = Constantemente, definitivamente certo.<br>
+            <strong>2</strong> = A maioria das vezes, normalmente certo.<br>
+            <strong>1</strong> = Algumas vezes, de vez em quando.<br>
+            <strong>0</strong> = Nunca, jamais.
+        </div>
+
         <div id="questions-container"></div>
-        <div id="error-box" style="display:none; color:red; text-align:center; padding:10px;">Preencha todas as questões.</div>
-        <button type="submit" class="submit-btn no-print">Calcular Meus Dons (Teste)</button>
+        
+        <div id="error-box" style="display:none; color:red; text-align:center; padding:10px; font-weight:bold;">
+            Por favor, preencha o seu nome e todas as questões antes de calcular.
+        </div>
+        
+        <button type="submit" class="submit-btn">Calcular Meus Dons</button>
     </form>
 
     <div id="results">
-        <div id="pdf-content">
-            <h1 style="color: #166534; font-size: 1.8em; text-align: center;">Meus Resultados - Dons Espirituais I</h1>
-            <p style="text-align: center; color: #666;">Data do Teste: <span id="data-teste"></span></p>
-
-            <div class="top-gifts">
-                <h2>🏆 Seus 3 Dons Principais:</h2>
-                <div id="top-gifts-list"></div>
-            </div>
-
-            <h3>📊 Pontuação dos Demais Dons:</h3>
-            <div class="other-gifts" id="other-gifts-list"></div>
-
-            <div class="pastor-note">
-                Procure o Pastor da Igreja e converse com ele sobre o seu teste de dons para verificar em qual ministério você poderá servir.
-            </div>
-
-            <div class="definitions-section">
-                <h2>Parte 3 - Entendendo os Seus Dons</h2>
-                <p>Abaixo estão as explicações sobre cada um dos dons avaliados neste teste:</p>
-                
-                <div class="def-item"><strong>Administração</strong> Capacidade de entender os alvos de uma organização e traçar planos eficazes para alcançá-los.</div>
-                <div class="def-item"><strong>Apostolado – Plantador de Igrejas</strong> Capacidade de iniciar novas frentes missionárias e igrejas.</div>
-                <div class="def-item"><strong>Habilidade Manual</strong> Habilidade especial para usar as mãos e materiais na construção e manutenção do reino.</div>
-                <div class="def-item"><strong>Comunicação Criativa</strong> Capacidade de comunicar o evangelho através das artes (música, teatro, dança, escrita).</div>
-                <div class="def-item"><strong>Discernimento</strong> Capacidade de distinguir a verdade do erro espiritual, e identificar motivações.</div>
-                <div class="def-item"><strong>Aconselhamento (Exortação)</strong> Capacidade de ministrar encorajamento, consolo e orientação prática às pessoas.</div>
-                <div class="def-item"><strong>Evangelismo</strong> Capacidade de compartilhar o evangelho com não-cristãos de forma que eles respondam positivamente.</div>
-                <div class="def-item"><strong>Fé</strong> Confiança extraordinária nas promessas, poder e presença de Deus.</div>
-                <div class="def-item"><strong>Contribuição</strong> Capacidade de contribuir financeiramente com alegria, liberalidade e sacrifício para o Reino.</div>
-                <div class="def-item"><strong>Ajuda / Serviço</strong> Capacidade de investir talentos na vida e no ministério de outros membros do corpo, aliviando suas cargas.</div>
-                <div class="def-item"><strong>Hospitalidade</strong> Capacidade de prover um ambiente aberto e acolhedor para as pessoas.</div>
-                <div class="def-item"><strong>Oração / Intercessão</strong> Capacidade de orar por extensos períodos regularmente, vendo respostas frequentes e específicas.</div>
-                <div class="def-item"><strong>Conhecimento</strong> Capacidade de descobrir, analisar e organizar informações e verdades bíblicas.</div>
-                <div class="def-item"><strong>Liderança</strong> Capacidade de inspirar, motivar e guiar outros para alcançarem os propósitos de Deus.</div>
-                <div class="def-item"><strong>Misericórdia</strong> Capacidade de sentir compaixão e agir de forma prática para aliviar o sofrimento alheio.</div>
-                <div class="def-item"><strong>Profecia</strong> Capacidade de declarar a verdade de Deus com convicção para edificação, exortação e consolação.</div>
-                <div class="def-item"><strong>Pastor</strong> Capacidade de assumir a responsabilidade pelo bem-estar espiritual de um grupo de crentes.</div>
-                <div class="def-item"><strong>Ensino</strong> Capacidade de comunicar verdades bíblicas de forma clara e aplicável à vida.</div>
-                <div class="def-item"><strong>Sabedoria</strong> Capacidade de aplicar o conhecimento e a verdade de Deus a situações complexas e práticas da vida.</div>
-            </div>
+        <div class="resultado-header">
+            <h2>Resultado de: <span id="display-name"></span></h2>
+            <p>Teste realizado em: <span id="data-teste"></span></p>
         </div>
 
-        <button onclick="baixarPDF()" class="download-btn no-print">💾 Salvar Resultado Completo em PDF</button>
+        <div class="top-gifts">
+            <h3>🏆 Seus 3 Dons Principais</h3>
+            <div id="top-gifts-list"></div>
+        </div>
+
+        <div class="other-gifts" id="other-gifts-list"></div>
+
+        <div class="pastor-note no-print">
+            Tire um print (captura de tela) desta parte ou salve em PDF para apresentar ao seu Pastor.
+        </div>
+
+        <button onclick="window.print()" class="download-btn no-print">🖨️ Imprimir / Salvar como PDF</button>
+
+        <div class="definitions-section">
+            <h3 style="text-align: center; margin-top: 0;">Parte 3 – Explicação de alguns dos dons Espirituais</h3>
+            
+            <div class="def-item">
+                <strong>1. Apóstolo</strong>
+                Mensageiro, enviado com autoridade como embaixador. A função do missionário pioneiro hoje é, quanto ao sentido geral, a mesma dos apóstolos. No caso dos doze, eram enviados diretamente por Cristo numa missão especial e com autoridade especial: eram os que transmitiriam e interpretariam o corpo de verdade revelada (a doutrina de Cristo) para a Igreja - At 2.42; 1Co 3.11; Ef 2.20. Nesse sentido específico os doze apóstolos foram singulares - Ap 21.14.
+            </div>
+            <div class="def-item">
+                <strong>2. Profetas / Profecias</strong>
+                "Fazer brilhar", capacitado por Deus para transmitir a Palavra - 2Pe 1.19; 1Co 14.3. Alguém que edifica, exorta e consola. É o dom de expor a verdade divina de modo claro, brilhante, fascinante e irresistível. Também pode referir-se ao que prevê algo - At 11.27-30.
+            </div>
+            <div class="def-item">
+                <strong>3. Evangelista</strong>
+                Literalmente, "Mensageiro de Boas Novas" - At 21.18; Ef 4.11; 2Tm 4.5. A incumbência de evangelizar e de ganhar almas é geral para todos os membros do Corpo, mas o dom é particular, e seu fruto é produzir muitas conversões e equipar a Igreja para ganhar almas para Cristo. É alguém que comunica o Evangelho de maneira relevante e conveniente.
+            </div>
+            <div class="def-item">
+                <strong>4. Pastor-Mestre</strong>
+                Capacidade para apascentar o rebanho ensinando e aplicando as verdades bíblicas à vida, aprofundando as convicções doutrinárias produzindo progresso na fé e na experiência cristã. Suas funções são:
+                <ul>
+                    <li>At 20.28 - apascentar, cuidar e vigiar o rebanho de Cristo na Terra;</li>
+                    <li>Ef 4.11, 12 - equipar, treinar, os santos para a obra do ministério do Corpo;</li>
+                    <li>2Tm 4.5 - supervisionar o funcionamento do Corpo de Cristo;</li>
+                    <li>Vários Presbíteros, Anciãos e Bispos são também pastores e mestres 2Tm 3.2; 5.17-20; 1Pe 5.1-4.</li>
+                </ul>
+            </div>
+            <div class="def-item">
+                <strong>5. Ensino</strong>
+                1Co 12.28; Rm 12.7 - Capacidade de comunicação da verdade divina à vida dos ouvintes, resultando em edificação espiritual. Habilidade de transmitir a sabedoria e o conhecimento, ou os frutos desses dons.
+            </div>
+            <div class="def-item">
+                <strong>6. Conhecimento</strong>
+                1Co 12.8 - Capacidade de aprender, de assimilar conhecimentos espirituais.
+            </div>
+            <div class="def-item">
+                <strong>7. Sabedoria</strong>
+                1Co 12.8 - Capacidade de interpretar as Escrituras e aplicá-las à vida de modo funcional e eficiente.
+            </div>
+            <div class="def-item">
+                <strong>8. Exortação</strong>
+                Rm 12.8; 15.14 - Capacidade espiritual de encorajar. "Aqueles que possuem esse dom são capazes de inspirar outros à ação, despertar novo interesse espiritual ou reafirmar os que estão em dívida ou desgraça" (R.C. Stedmam).
+            </div>
+            <div class="def-item">
+                <strong>9. Presidir</strong>
+                Rm 12.8 - Capacidade de dirigir ou de liderança que produz benefícios espirituais. Literalmente: "O que está em pé, na frente".
+            </div>
+            <div class="def-item">
+                <strong>10. Contribuir / Repartir</strong>
+                Rm 12.8 - Habilidade recebida para ganhar dinheiro e ofertá-lo com sabedoria, alegria e generosidade para o trabalho de Deus; dom da liberalidade.
+            </div>
+            <div class="def-item">
+                <strong>11. Misericórdia</strong>
+                Rm 12.8 - Capacidade de prestar auxílio não-merecido, de ajudar os repugnáveis. É muito parecido com o dom de socorro, com a diferença de que o dom de misericórdia é dirigido aos indignos, àqueles que geralmente causam repulsa pelo seu estado ou por sua natureza.
+            </div>
+            <div class="def-item">
+                <strong>12. Socorro</strong>
+                1Co 12.28 - Capacidade de ajudar outros em suas necessidades de modo a fortalecê-los e encorajá-los material e espiritualmente. É o dom da ajuda onde há necessidade, da disposição de servir ou do espírito serviçal.
+            </div>
+            <div class="def-item">
+                <strong>13. Fé</strong>
+                1Co 12.9 - Visão, capacidade espiritual de ver o invisível e crer que Deus fará, mesmo se parece impossível, pondo-se em ação mesmo contra as circunstâncias - Hb 11.1-6. Capacidade para fazer grandes coisas para Deus - 1Co 13.2; 5.34; 10.52.
+            </div>
+            <div class="def-item">
+                <strong>14. Dons de Curar</strong>
+                1Co 12.9 - Capacidade de ministrar à necessidade da pessoa através da oração, do aconselhamento e do testemunho, em todos os níveis da necessidade humana: corpo, emoções e espírito.
+            </div>
+            <div class="def-item">
+                <strong>15. Milagres ou Maravilhas</strong>
+                1Co 12.10 - Capacidade espiritual recebida de Deus para influir nos processos naturais objetivando resultados sobrenaturais.
+            </div>
+            <div class="def-item">
+                <strong>16. Línguas e Interpretações</strong>
+                1Co 12.10 - Capacidade extraordinária de falar línguas conhecidas (idiomas) no mundo de hoje, sem as ter estudado. Vemos possibilidade remota para línguas "extáticas". "extático" - Que está em estado de êxtase; que pode ser provocado por êxtase ou que se relaciona com êxtase;<br>
+                Propósitos: falar com Deus para adorá-lo (possibilidade da língua extática) - 1Co 14.2; produzir edificação pessoal - 1Co 14.4; produzir edificação da Igreja, quando usado com intérprete - 1Co 14.26, 27; sinal para os descrentes - 1Co 14.21, 22. O dom de línguas, ao ser usado na Igreja, precisa seguir a orientação de 1Co 14.27-35. "O dom de línguas marca o fato de que Deus usava várias línguas humanas para servirem ao seu propósito - At 2.39; 1Co 14.21,22 demonstram isto.<br>
+                Receptores: As perguntas retóricas de 1Co 12.30, cujas respostas são NÃO, confirmam a ideia de que alguns terão este dom, outros não. Numa reunião pública, o dom de línguas só deverá ser usado por duas ou três pessoas SE HOUVER QUEM INTERPRETE (capacidade extraordinária de interpretar uma língua sem ter estudado). Se não houver tal pessoa, cala-se e fale com Deus.
+            </div>
+            <div class="def-item">
+                <strong>17. Discernimento</strong>
+                1Co 12.10 - Capacidade de distinguir o erro da verdade, mesmo antes que os resultados confirmem - At 5.4,9.
+            </div>
+            
+            <div style="background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 15px; font-size: 0.9em;">
+                <strong>OBSERVAÇÃO FINAL:</strong> Esses são os dons mencionados nas Escrituras. A lista não se esgota aqui, pois em torno de cada um geralmente há uma diversidade de manifestações e dons secundários, gêmeos ou afins, produzidos pela manifestação destes dons. Tomando cada dom mencionado e indagando quais as suas manifestações ou implicações no Corpo de Cristo e na vida cristã, teremos as áreas e formas de sua operação na Igreja.
+            </div>
+        </div>
     </div>
 </div>
 
@@ -275,7 +392,11 @@
 
     const container = document.getElementById('questions-container');
 
-    // Gerar questões COM RESPOSTAS PRÉ-PREENCHIDAS PARA TESTE
+    window.removerErro = function(cardId) {
+        document.getElementById(cardId).classList.remove('error-highlight');
+    };
+
+    // Gerar questões COM RESPOSTAS PRÉ-PREENCHIDAS PARA TESTE RÁPIDO
     questionsText.forEach((q, index) => {
         const questionNum = index + 1;
         const randomVal = Math.floor(Math.random() * 4); // Gera aleatório entre 0 e 3
@@ -286,10 +407,10 @@
         card.innerHTML = `
             <div class="question-text">${questionNum}. ${q}</div>
             <div class="options-group">
-                <label class="radio-label">0 <input type="radio" name="q${index}" value="0" ${randomVal === 0 ? 'checked' : ''}></label>
-                <label class="radio-label">1 <input type="radio" name="q${index}" value="1" ${randomVal === 1 ? 'checked' : ''}></label>
-                <label class="radio-label">2 <input type="radio" name="q${index}" value="2" ${randomVal === 2 ? 'checked' : ''}></label>
-                <label class="radio-label">3 <input type="radio" name="q${index}" value="3" ${randomVal === 3 ? 'checked' : ''}></label>
+                <label class="radio-label">0 <input type="radio" name="q${index}" value="0" onchange="removerErro('card-${index}')" ${randomVal === 0 ? 'checked' : ''}></label>
+                <label class="radio-label">1 <input type="radio" name="q${index}" value="1" onchange="removerErro('card-${index}')" ${randomVal === 1 ? 'checked' : ''}></label>
+                <label class="radio-label">2 <input type="radio" name="q${index}" value="2" onchange="removerErro('card-${index}')" ${randomVal === 2 ? 'checked' : ''}></label>
+                <label class="radio-label">3 <input type="radio" name="q${index}" value="3" onchange="removerErro('card-${index}')" ${randomVal === 3 ? 'checked' : ''}></label>
             </div>
         `;
         container.appendChild(card);
@@ -298,58 +419,72 @@
     document.getElementById('gifts-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
+        const nomeUsuario = document.getElementById('nome-usuario').value;
         let scores = new Array(19).fill(0);
-        
-        // Calcula as notas
+        let isValid = true;
+        let primeiroErroId = null;
+
+        const errorBox = document.getElementById('error-box');
+        errorBox.style.display = 'none';
+
+        // Validação
         for (let i = 0; i < questionsText.length; i++) {
             const selected = document.querySelector(`input[name="q${i}"]:checked`);
-            if(selected) {
-                const categoryIndex = i % 19;
-                scores[categoryIndex] += parseInt(selected.value);
+            const card = document.getElementById(`card-${i}`);
+            
+            if (!selected) {
+                isValid = false;
+                card.classList.add('error-highlight');
+                if (!primeiroErroId) {
+                    primeiroErroId = `card-${i}`;
+                }
             }
         }
 
-        // Mapear pontuações e ordenar do maior para o menor
+        if (!isValid || !nomeUsuario) {
+            errorBox.style.display = 'block';
+            if (primeiroErroId) {
+                const elementoErro = document.getElementById(primeiroErroId);
+                const y = elementoErro.getBoundingClientRect().top + window.pageYOffset - 20;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+            return;
+        }
+
+        // Calcula notas
+        for (let i = 0; i < questionsText.length; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            const categoryIndex = i % 19;
+            scores[categoryIndex] += parseInt(selected.value);
+        }
+
+        // Mapear e ordenar
         let finalResults = giftCategories.map((name, index) => {
             return { name: name, score: scores[index] };
         });
         finalResults.sort((a, b) => b.score - a.score);
 
+        // Preencher Nome e Data
+        document.getElementById('display-name').innerText = nomeUsuario;
+        document.getElementById('data-teste').innerText = new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR');
+
         // Exibir Top 3
         const topGiftsList = document.getElementById('top-gifts-list');
         topGiftsList.innerHTML = '';
         for(let i = 0; i < 3; i++) {
-            topGiftsList.innerHTML += `<div class="gift-result-top">${i+1}º - ${finalResults[i].name} (Pontuação: ${finalResults[i].score})</div>`;
+            topGiftsList.innerHTML += `<div class="gift-result-top">${i+1}º - ${finalResults[i].name} (${finalResults[i].score} pts)</div>`;
         }
 
         // Exibir Restante (do 4º ao 19º)
         const otherGiftsList = document.getElementById('other-gifts-list');
         otherGiftsList.innerHTML = '';
         for(let i = 3; i < finalResults.length; i++) {
-            otherGiftsList.innerHTML += `<div class="gift-result-other">${i+1}º - ${finalResults[i].name} (${finalResults[i].score} pts)</div>`;
+            otherGiftsList.innerHTML += `<div class="gift-result-other">${i+1}º: ${finalResults[i].name} (${finalResults[i].score})</div>`;
         }
-
-        document.getElementById('data-teste').innerText = new Date().toLocaleDateString('pt-BR');
         
         document.getElementById('results').style.display = 'block';
         window.scrollTo({ top: document.getElementById('results').offsetTop - 20, behavior: 'smooth' });
     });
-
-    // Função para gerar PDF corrigida (força background branco)
-    function baixarPDF() {
-        const elemento = document.getElementById('pdf-content');
-        
-        // Configurações avançadas para não gerar página em branco
-        const opcoes = {
-            margin:       10,
-            filename:     'Meus-Dons-Espirituais.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, backgroundColor: '#ffffff' }, // Força fundo branco
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opcoes).from(elemento).save();
-    }
 </script>
 
 </body>
