@@ -24,12 +24,11 @@
             min-height: 100vh;
         }
 
-        /* Cabeçalho com as cores da Igreja */
         header {
             background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
             color: var(--white);
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
@@ -40,33 +39,25 @@
         }
 
         header h2 {
-            margin: 10px 0 0 0;
-            font-size: 1.2em;
+            margin: 15px 0 0 0;
+            font-size: 1.3em;
             font-weight: 300;
+            font-style: italic;
             opacity: 0.9;
         }
 
-        /* Container principal */
         .main-content {
             flex: 1;
             max-width: 800px;
-            margin: 40px auto;
+            margin: 60px auto;
             padding: 0 20px;
             text-align: center;
         }
 
-        .intro-text {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            color: #555;
-        }
-
-        /* Grid dos botões/cards */
         .test-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 25px;
         }
 
         @media (min-width: 600px) {
@@ -77,31 +68,26 @@
 
         .test-card {
             background-color: var(--white);
-            border-radius: 10px;
-            padding: 30px 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 5px solid var(--blue-light);
+            border-radius: 12px;
+            padding: 40px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border-top: 6px solid var(--blue-light);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
         }
 
         .test-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
         .test-card h3 {
             color: var(--blue-dark);
-            margin-top: 0;
-            font-size: 1.4em;
-        }
-
-        .test-card p {
-            color: #666;
-            font-size: 0.95em;
-            margin-bottom: 25px;
+            margin: 0 0 25px 0;
+            font-size: 1.5em;
         }
 
         .btn {
@@ -109,8 +95,8 @@
             background-color: var(--blue-light);
             color: var(--white);
             text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 14px 30px;
+            border-radius: 30px;
             font-weight: bold;
             font-size: 1.1em;
             transition: background-color 0.3s ease;
@@ -120,13 +106,12 @@
             background-color: var(--blue-dark);
         }
 
-        /* Rodapé */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             background-color: var(--blue-dark);
             color: var(--white);
-            font-size: 0.9em;
+            font-size: 0.95em;
             margin-top: auto;
         }
 
@@ -140,29 +125,18 @@
 
     <header>
         <h1>Igreja Batista do Estoril</h1>
-        <h2>Descubra onde Deus quer usar você</h2>
+        <h2>Sob a cruz de Cristo, para a glória de Deus</h2>
     </header>
 
     <div class="main-content">
-        <div class="intro-text">
-            <p>A Bíblia nos ensina que o Espírito Santo capacita cada cristão com dons específicos para a edificação do Corpo de Cristo. Separamos duas ferramentas de avaliação para ajudar você a identificar suas vocações e talentos ministeriais.</p>
-            <p><strong>Escolha um dos testes abaixo para iniciar:</strong></p>
-        </div>
-
         <div class="test-grid">
             <div class="test-card">
-                <div>
-                    <h3>Levantamento de Dons I</h3>
-                    <p>Avaliação completa e detalhada. Este teste analisa 19 categorias diferentes de dons espirituais através de 133 perguntas situacionais.</p>
-                </div>
+                <h3>Levantamento de Dons I</h3>
                 <a href="teste1.html" class="btn">Fazer o Teste I</a>
             </div>
 
             <div class="test-card">
-                <div>
-                    <h3>Levantamento de Dons II</h3>
-                    <p>Avaliação focada em ministérios práticos. Este teste analisa 9 áreas fundamentais de serviço através de 45 perguntas diretas.</p>
-                </div>
+                <h3>Levantamento de Dons II</h3>
                 <a href="teste2.html" class="btn">Fazer o Teste II</a>
             </div>
         </div>
