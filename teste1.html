@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Levantamento de Dons I - Igreja Batista do Estoril</title>
+    <title>Levantamento de Dons Espirituais I</title>
     <style>
         :root {
-            --blue-dark: #0c245b;
-            --blue-light: #07248E;
-            --white: #ffffff;
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
             --bg-color: #f8f9fa;
             --text-color: #333;
+            --border-color: #e2e8f0;
             --error-color: #dc2626;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0; padding: 15px;
+            line-height: 1.6;
+            margin: 0;
+            padding: 15px;
         }
 
         .container {
@@ -30,199 +32,523 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        h1, h2, h3 { color: var(--blue-dark); text-align: center; }
-        h1 { border-bottom: 3px solid var(--blue-light); padding-bottom: 10px; }
+        h1, h2, h3 { color: var(--primary-color); }
+        
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            font-size: 1.8em;
+        }
 
         .input-group {
             margin-bottom: 15px;
             background-color: #eef2f7;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            border-left: 5px solid var(--blue-light);
+            border-left: 5px solid var(--secondary-color);
         }
 
-        .input-group label { font-weight: bold; display: block; margin-bottom: 8px; }
+        .input-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
 
         .input-group input {
-            width: 100%; padding: 12px; font-size: 1.1em;
-            border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
 
+        /* NOVO: Estilo para o aviso de privacidade */
         .privacy-notice {
-            background-color: #fee2e2; color: #991b1b;
-            padding: 12px; border-radius: 6px; font-size: 0.9em;
-            margin-bottom: 20px; text-align: center; font-weight: 500;
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #f87171;
+        }
+
+        .instructions, .legend {
+            background-color: #eef2f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
         }
 
         .legend {
-            background-color: #fff3cd; border-left: 5px solid #ffc107;
-            padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9em;
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
         }
 
         .question-card {
-            border: 1px solid #e2e8f0; border-radius: 8px;
-            padding: 15px; margin-bottom: 12px; background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #fff;
         }
 
-        .question-card.error-highlight { border: 2px solid var(--error-color); background-color: #fef2f2; }
+        .question-card.error-highlight {
+            border: 2px solid var(--error-color);
+            background-color: #fef2f2;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
 
         .options-group {
-            display: flex; justify-content: space-around;
-            background-color: #f8fafc; padding: 10px; border-radius: 8px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            background-color: #f8fafc;
+            padding: 8px;
+            border-radius: 8px;
         }
 
         .radio-label {
-            display: flex; flex-direction: column; align-items: center;
-            cursor: pointer; font-weight: bold; font-size: 1.1em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 1.1em;
         }
 
-        input[type="radio"] { margin-top: 5px; transform: scale(1.3); }
-
-        .submit-btn, .print-btn {
-            display: block; width: 100%; padding: 15px; color: #fff;
-            border: none; border-radius: 8px; font-size: 1.2em;
-            font-weight: bold; cursor: pointer; margin-top: 20px;
+        input[type="radio"] {
+            margin-top: 5px;
+            transform: scale(1.3);
+            cursor: pointer;
         }
 
-        .submit-btn { background-color: var(--blue-light); }
-        .print-btn { background-color: #10b981; }
+        .submit-btn, .download-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
 
-        #results { display: none; margin-top: 40px; }
+        .submit-btn { background-color: var(--secondary-color); }
+        .download-btn { background-color: #10b981; margin-top: 15px; }
 
-        .top-gifts { background-color: #f0fdf4; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #bbf7d0; }
-        .gift-item-top { padding: 10px; background: #fff; margin: 8px 0; border-left: 5px solid #22c55e; font-weight: bold; }
+        #results {
+            display: none;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ccc;
+        }
 
-        .other-gifts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .gift-item-other { background: #f1f5f9; padding: 8px; border-radius: 4px; font-size: 0.85em; text-align: center; }
+        .resultado-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
 
-        .definitions-section { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
-        .def-item { margin-bottom: 15px; font-size: 0.95em; }
+        .resultado-header h2 {
+            color: #166534;
+            margin: 5px 0;
+            font-size: 1.4em;
+        }
 
-        .answer-log { margin-top: 30px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
-        .log-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 8px; margin-top: 10px; }
-        .log-box { background: #eee; padding: 4px; font-size: 0.8em; text-align: center; border-radius: 3px; }
+        .resultado-header p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9em;
+        }
 
+        .top-gifts {
+            background-color: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .top-gifts h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+            text-align: center;
+            color: #166534;
+        }
+
+        .gift-result-top {
+            font-size: 1.1em;
+            color: #166534;
+            font-weight: bold;
+            margin: 5px 0;
+            padding: 8px;
+            background: #fff;
+            border-radius: 6px;
+            border-left: 4px solid #22c55e;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .other-gifts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .gift-result-other {
+            font-size: 0.85em;
+            color: #475569;
+            padding: 6px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .pastor-note {
+            font-size: 0.9em;
+            color: #b45309;
+            background: #fef3c7;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .definitions-section {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.9em;
+        }
+
+        .def-item { margin-bottom: 12px; }
+        .def-item strong { color: var(--primary-color); display: block; }
+        .def-item ul { margin-top: 5px; padding-left: 20px; }
+
+        /* NOVO: Estilos para o Gabarito de Respostas */
+        .answer-log-section {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            margin-top: 20px;
+        }
+
+        .log-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .log-item {
+            background: #e2e8f0;
+            padding: 6px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Estilos específicos para impressão / Salvar como PDF */
         @media print {
+            body { background: #fff; padding: 0; }
+            .container { box-shadow: none; padding: 0; }
             .no-print { display: none !important; }
-            .container { box-shadow: none; border: none; width: 100%; }
-            #results { display: block !important; }
-            .definitions-section { page-break-before: always; }
-            .answer-log { page-break-before: always; }
+            #results { display: block !important; border-top: none; margin-top: 0; padding-top: 0; }
+            .other-gifts { grid-template-columns: 1fr 1fr 1fr; }
+            
+            /* Força a seção de explicações para a próxima página */
+            .definitions-section {
+                page-break-before: always;
+                break-before: page;
+                border: none;
+            }
+
+            /* NOVO: Força o gabarito para uma nova página também */
+            .answer-log-section {
+                page-break-before: always;
+                break-before: page;
+                border: none;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="no-print">Levantamento de Dons I</h1>
+<div class="container" id="main-container">
+    <h1 class="no-print">Teste de Dons Espirituais I</h1>
 
     <form id="gifts-form" class="no-print">
+        
         <div class="input-group">
-            <label>Nome do Participante:</label>
-            <input type="text" id="p_nome" name="n_p_random" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" required>
+            <label for="nome-usuario">Qual é o seu nome?</label>
+            <input type="text" id="nome-usuario" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" data-lpignore="true" placeholder="Digite seu nome completo aqui..." required>
         </div>
 
         <div class="privacy-notice">
-            Seus dados e resultados não são armazenados. Ao fechar esta página, as informações serão apagadas.
+            Aviso: Seu nome e resultados não são salvos em nosso sistema e serão perdidos ao fechar a página.
         </div>
 
         <div class="legend">
-            <strong>LEGENDA:</strong> 3 (Sempre) | 2 (Normalmente) | 1 (Às vezes) | 0 (Nunca)
+            <strong>LEGENDA DE PONTUAÇÃO:</strong><br>
+            <strong>3</strong> = Constantemente, definitivamente certo.<br>
+            <strong>2</strong> = A maioria das vezes, normalmente certo.<br>
+            <strong>1</strong> = Algumas vezes, de vez em quando.<br>
+            <strong>0</strong> = Nunca, jamais.
         </div>
 
         <div id="questions-container"></div>
-        <button type="submit" class="submit-btn">Calcular Resultados</button>
+        
+        <div id="error-box" style="display:none; color:red; text-align:center; padding:10px; font-weight:bold;">
+            Por favor, preencha o seu nome e todas as questões antes de calcular.
+        </div>
+        
+        <button type="submit" class="submit-btn">Calcular Meus Dons</button>
     </form>
 
     <div id="results">
-        <h2>Resultado para: <span id="res-nome"></span></h2>
-        <p style="text-align:center">Data: <span id="res-data"></span></p>
+        <div class="resultado-header">
+            <h2>Resultado de: <span id="display-name"></span></h2>
+            <p>Teste realizado em: <span id="data-teste"></span></p>
+        </div>
 
         <div class="top-gifts">
             <h3>🏆 Seus 3 Dons Principais</h3>
-            <div id="top-list"></div>
+            <div id="top-gifts-list"></div>
         </div>
 
-        <h3>Pontuação Completa</h3>
-        <div class="other-gifts" id="other-list"></div>
+        <div class="other-gifts" id="other-gifts-list"></div>
 
-        <button onclick="window.print()" class="print-btn no-print">🖨️ Imprimir / Salvar PDF</button>
+        <div class="pastor-note no-print">
+            Tire um print (captura de tela) desta parte ou salve em PDF para apresentar ao seu Pastor.
+        </div>
+
+        <button onclick="window.print()" class="download-btn no-print">🖨️ Imprimir / Salvar como PDF</button>
 
         <div class="definitions-section">
-            <h3>Explicação dos Dons Espirituais</h3>
-            <div class="def-item"><strong>1. Apóstolo:</strong> Mensageiro enviado com autoridade...</div>
-            <div class="def-item"><strong>2. Profetas:</strong> Capacitado para transmitir a Palavra...</div>
-            <div class="def-item"><strong>3. Evangelista:</strong> Mensageiro de Boas Novas...</div>
-            <div class="def-item"><strong>4. Pastor-Mestre:</strong> Capacidade para apascentar o rebanho...</div>
-            <div class="def-item"><strong>5. Ensino:</strong> Comunicação da verdade divina à vida...</div>
-            <div class="def-item"><strong>6. Conhecimento:</strong> Capacidade de assimilar conhecimentos espirituais...</div>
-            <div class="def-item"><strong>7. Sabedoria:</strong> Capacidade de interpretar as Escrituras e aplicá-las...</div>
-            <div class="def-item"><strong>8. Exortação:</strong> Capacidade espiritual de encorajar...</div>
-            <div class="def-item"><strong>9. Presidir:</strong> Capacidade de dirigir ou de liderança...</div>
-            <div class="def-item"><strong>10. Contribuir:</strong> Habilidade para ofertar com sabedoria e alegria...</div>
-            <div class="def-item"><strong>11. Misericórdia:</strong> Auxílio prático aos necessitados e sofridos...</div>
-            <div class="def-item"><strong>12. Socorro:</strong> Dom de ajuda onde há necessidade, espírito serviçal...</div>
-            <div class="def-item"><strong>13. Fé:</strong> Visão espiritual para crer no impossível...</div>
-            <div class="def-item"><strong>14. Dons de Curar:</strong> Ministração à necessidade (corpo e espírito)...</div>
-            <div class="def-item"><strong>15. Milagres:</strong> Resultados sobrenaturais pela ação de Deus...</div>
-            <div class="def-item"><strong>16. Línguas:</strong> Capacidade extraordinária de adoração e sinal...</div>
-            <div class="def-item"><strong>17. Discernimento:</strong> Distinguir o erro da verdade...</div>
+            <h3 style="text-align: center; margin-top: 0;">Explicação de alguns dos dons Espirituais</h3>
+            
+            <div class="def-item">
+                <strong>1. Apóstolo</strong>
+                Mensageiro, enviado com autoridade como embaixador. A função do missionário pioneiro hoje é, quanto ao sentido geral, a mesma dos apóstolos. No caso dos doze, eram enviados diretamente por Cristo numa missão especial e com autoridade especial: eram os que transmitiriam e interpretariam o corpo de verdade revelada (a doutrina de Cristo) para a Igreja - At 2.42; 1Co 3.11; Ef 2.20. Nesse sentido específico os doze apóstolos foram singulares - Ap 21.14.
+            </div>
+            <div class="def-item">
+                <strong>2. Profetas / Profecias</strong>
+                "Fazer brilhar", capacitado por Deus para transmitir a Palavra - 2Pe 1.19; 1Co 14.3. Alguém que edifica, exorta e consola. É o dom de expor a verdade divina de modo claro, brilhante, fascinante e irresistível. Também pode referir-se ao que prevê algo - At 11.27-30.
+            </div>
+            <div class="def-item">
+                <strong>3. Evangelista</strong>
+                Literalmente, "Mensageiro de Boas Novas" - At 21.18; Ef 4.11; 2Tm 4.5. A incumbência de evangelizar e de ganhar almas é geral para todos os membros do Corpo, mas o dom é particular, e seu fruto é produzir muitas conversões e equipar a Igreja para ganhar almas para Cristo. É alguém que comunica o Evangelho de maneira relevante e conveniente.
+            </div>
+            <div class="def-item">
+                <strong>4. Pastor-Mestre</strong>
+                Capacidade para apascentar o rebanho ensinando e aplicando as verdades bíblicas à vida, aprofundando as convicções doutrinárias produzindo progresso na fé e na experiência cristã. Suas funções são:
+                <ul>
+                    <li>At 20.28 - apascentar, cuidar e vigiar o rebanho de Cristo na Terra;</li>
+                    <li>Ef 4.11, 12 - equipar, treinar, os santos para a obra do ministério do Corpo;</li>
+                    <li>2Tm 4.5 - supervisionar o funcionamento do Corpo de Cristo;</li>
+                    <li>Vários Presbíteros, Anciãos e Bispos são também pastores e mestres 2Tm 3.2; 5.17-20; 1Pe 5.1-4.</li>
+                </ul>
+            </div>
+            <div class="def-item">
+                <strong>5. Ensino</strong>
+                1Co 12.28; Rm 12.7 - Capacidade de comunicação da verdade divina à vida dos ouvintes, resultando em edificação espiritual. Habilidade de transmitir a sabedoria e o conhecimento, ou os frutos desses dons.
+            </div>
+            <div class="def-item">
+                <strong>6. Conhecimento</strong>
+                1Co 12.8 - Capacidade de aprender, de assimilar conhecimentos espirituais.
+            </div>
+            <div class="def-item">
+                <strong>7. Sabedoria</strong>
+                1Co 12.8 - Capacidade de interpretar as Escrituras e aplicá-las à vida de modo funcional e eficiente.
+            </div>
+            <div class="def-item">
+                <strong>8. Exortação</strong>
+                Rm 12.8; 15.14 - Capacidade espiritual de encorajar. "Aqueles que possuem esse dom são capazes de inspirar outros à ação, despertar novo interesse espiritual ou reafirmar os que estão em dívida ou desgraça" (R.C. Stedmam).
+            </div>
+            <div class="def-item">
+                <strong>9. Presidir</strong>
+                Rm 12.8 - Capacidade de dirigir ou de liderança que produz benefícios espirituais. Literalmente: "O que está em pé, na frente".
+            </div>
+            <div class="def-item">
+                <strong>10. Contribuir / Repartir</strong>
+                Rm 12.8 - Habilidade recebida para ganhar dinheiro e ofertá-lo com sabedoria, alegria e generosidade para o trabalho de Deus; dom da liberalidade.
+            </div>
+            <div class="def-item">
+                <strong>11. Misericórdia</strong>
+                Rm 12.8 - Capacidade de prestar auxílio não-merecido, de ajudar os repugnáveis. É muito parecido com o dom de socorro, com a diferença de que o dom de misericórdia é dirigido aos indignos, àqueles que geralmente causam repulsa pelo seu estado ou por sua natureza.
+            </div>
+            <div class="def-item">
+                <strong>12. Socorro</strong>
+                1Co 12.28 - Capacidade de ajudar outros em suas necessidades de modo a fortalecê-los e encorajá-los material e espiritualmente. É o dom da ajuda onde há necessidade, da disposição de servir ou do espírito serviçal.
+            </div>
+            <div class="def-item">
+                <strong>13. Fé</strong>
+                1Co 12.9 - Visão, capacidade espiritual de ver o invisível e crer que Deus fará, mesmo se parece impossível, pondo-se em ação mesmo contra as circunstâncias - Hb 11.1-6. Capacidade para fazer grandes coisas para Deus - 1Co 13.2; 5.34; 10.52.
+            </div>
+            <div class="def-item">
+                <strong>14. Dons de Curar</strong>
+                1Co 12.9 - Capacidade de ministrar à necessidade da pessoa através da oração, do aconselhamento e do testemunho, em todos os níveis da necessidade humana: corpo, emoções e espírito.
+            </div>
+            <div class="def-item">
+                <strong>15. Milagres ou Maravilhas</strong>
+                1Co 12.10 - Capacidade espiritual recebida de Deus para influir nos processos naturais objetivando resultados sobrenaturais.
+            </div>
+            <div class="def-item">
+                <strong>16. Línguas e Interpretações</strong>
+                1Co 12.10 - Capacidade extraordinária de falar línguas conhecidas (idiomas) no mundo de hoje, sem as ter estudado. Vemos possibilidade remota para línguas "extáticas". "extático" - Que está em estado de êxtase; que pode ser provocado por êxtase ou que se relaciona com êxtase;<br>
+                Propósitos: falar com Deus para adorá-lo (possibilidade da língua extática) - 1Co 14.2; produzir edificação pessoal - 1Co 14.4; produzir edificação da Igreja, quando usado com intérprete - 1Co 14.26, 27; sinal para os descrentes - 1Co 14.21, 22. O dom de línguas, ao ser usado na Igreja, precisa seguir a orientação de 1Co 14.27-35. "O dom de línguas marca o fato de que Deus usava várias línguas humanas para servirem ao seu propósito - At 2.39; 1Co 14.21,22 demonstram isto.<br>
+                Receptores: As perguntas retóricas de 1Co 12.30, cujas respostas são NÃO, confirmam a ideia de que alguns terão este dom, outros não. Numa reunião pública, o dom de línguas só deverá ser usado por duas ou três pessoas SE HOUVER QUEM INTERPRETE (capacidade extraordinária de interpretar uma língua sem ter estudado). Se não houver tal pessoa, cala-se e fale com Deus.
+            </div>
+            <div class="def-item">
+                <strong>17. Discernimento</strong>
+                1Co 12.10 - Capacidade de distinguir o erro da verdade, mesmo antes que os resultados confirmem - At 5.4,9.
+            </div>
+            
+            <div style="background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 15px; font-size: 0.9em;">
+                <strong>OBSERVAÇÃO FINAL:</strong> Esses são os dons mencionados nas Escrituras. A lista não se esgota aqui, pois em torno de cada um geralmente há uma diversidade de manifestações e dons secundários, gêmeos ou afins, produzidos pela manifestação destes dons. Tomando cada dom mencionado e indagando quais as suas manifestações ou implicações no Corpo de Cristo e na vida cristã, teremos as áreas e formas de sua operação na Igreja.
+            </div>
         </div>
 
-        <div class="answer-log">
-            <h3>Gabarito do Candidato (Respostas)</h3>
-            <div class="log-grid" id="res-log"></div>
+        <div class="answer-log-section">
+            <h3 style="text-align: center; margin-top: 0;">Gabarito de Respostas</h3>
+            <div class="log-grid" id="log-grid"></div>
         </div>
+
     </div>
 </div>
 
 <script>
-    const questions = [
+    const questionsText = [
         "Gosto de organizar pessoas, tarefas e eventos", "Gostaria de iniciar igrejas em lugares onde elas não existam.", "Gosto de trabalhar criativamente com madeira, tecido, tinta, metal, vidro ou outros materiais.", "Gosto de desafiar a perspectiva que as pessoas têm de Deus através de variadas formas de arte.", "Posso distinguir com facilidade entre verdade e erro espiritual, entre o bem e o mal.", "Normalmente, vejo o potencial das pessoas.", "Comunico o evangelho com clareza e de modo eficaz.", "Acho natural e fácil confiar em Deus para responder às minhas orações.", "Contribuo, liberalmente e com alegria, para pessoas com necessidades financeiras ou para projetos que requerem verba.", "Gosto de trabalhar na retaguarda apoiando o trabalho dos outros.", "Encaro meu lar como lugar de ministração às pessoas necessitadas.", "Recebo pedidos de oração de outras pessoas e oro por elas regularmente.", "As pessoas pedem a minha opinião sobre uma passagem ou verdade bíblica.", "Consigo motivar pessoas a atingirem um alvo.", "Identifico-me com as pessoas que estão sofrendo, e desejo ajudá-las no processo de restauração.", "Posso falar de forma a criar convicção e mudança nas vidas dos outros.", "Gosto de gastar tempo nutrindo e cuidando das pessoas.", "Consigo comunicar a Palavra de Deus de modo eficaz.", "Frequentemente, as pessoas me procuram para conselho sobre assuntos espirituais ou pessoais.", "Sou cuidadoso, completo e habilitado em administrar detalhes.", "A ideia de servir em outro país ou comunidade é muito interessante para mim.", "Tenho habilidade em trabalhar com vários tipos de ferramenta.", "Gosto de desenvolver e utilizar minhas habilidades artísticas (arte, drama, música, fotografia, etc.)", "Frequentemente, posso discernir o caráter de uma pessoa baseado apenas nas primeiras impressões.", "Gosto de encorajar e fortalecer aqueles que estão abatidos.", "Procuro, regularmente, oportunidades de construir relacionamentos íntegros com descrentes.", "Tenho confiança na provisão e ajuda contínua de Deus, mesmo em tempos difíceis.", "Contribuo com mais que o dízimo para que o trabalho do reino de Deus seja realizado.", "Gosto de fazer coisas rotineiras que apoiem o ministério.", "Gosto de conhecer pessoas novas e de ajudá-las a se sentirem bem-vindas.", "Gosto de passar períodos longos em oração e recebo direção quanto aos assuntos que Deus quer que leve a Ele.", "Recebo informações do Espírito que não adquiri por meios naturais.", "Posso influenciar pessoas a alcançarem uma visão.", "Consigo apoiar pacientemente aqueles que atravessam experiências dolorosas, enquanto eles tentam normalizar suas vidas.", "Sinto-me responsável por confrontar as pessoas com a verdade.", "Tenho compaixão pelos crentes que vacilam na fé, e tendo a protegê-los.", "Posso passar tempo estudando, sabendo que a apresentação da verdade fará diferença na vida das pessoas.", "Frequentemente, encontro soluções simples e práticas no meio do conflito ou confusão.", "Sei esclarecer os alvos e desenvolver estratégias para realizá-los.", "Estou disposto a ter um papel ativo no começo de uma nova igreja.", "Gosto de fazer (fabricar) coisas para serem usadas no ministério.", "Ajudo pessoas através da expressão artística a entenderem melhor a si mesmas, seus relacionamentos e a pessoa de Deus.", "Percebo falsidade ou engano antes que seja evidente para outras pessoas.", "Estimulo a esperança nos outros, direcionando-os às promessas de Deus.", "Tenho uma maneira de adaptar o evangelho para que seja relevante às necessidades da pessoa.", "Creio que Deus me ajudará a realizar grandes coisas.", "Administro bem minhas finanças para poder contribuir mais.", "Voluntariamente, assumo tarefas complicadas na igreja para suprir as necessidades dos outros.", "Acredito, verdadeiramente, que o Senhor me envia pessoas desconhecidas para que eu as apresente a outras pessoas.", "Sou consciente da ministração aos outros, enquanto oro.", "Sou comprometido e disponho de tempo para leitura e estudo das Escrituras, a fim de entender as verdades bíblicas.", "Sei ajustar meu estilo de liderança para que outros façam o melhor de si.", "Gosto de ajudar as pessoas que são consideradas inúteis ou sem esperança.", "Exponho, com ousadia, as tendências culturais, os ensinos ou eventos que contradizem os princípios bíblicos.", "Gosto de ajudar a pessoa como um todo, social, emocional, espiritualmente, etc.", "Presto muita atenção às palavras, frases e os significados das pessoas que ensinam.", "Tenho facilidade de selecionar o modo de agir mais eficaz dentre várias alternativas.", "Posso identificar e usar os recursos necessários para realizar uma tarefa de forma eficiente.", "Tenho facilidade em adaptar-me aos ambientes e culturas diferentes.", "Posso visualizar como uma coisa deverá ser construída antes de fazê-la.", "Gosto de encontrar maneiras novas e interessantes para comunicar a verdade de Deus.", "Percebo as coisas certas e erradas nas situações.", "Tento encorajar as pessoas que precisam dar passos corajosos na sua fé, família ou vida.", "Convido descrentes a aceitar Cristo como Salvador.", "Confio em Deus, nas circunstâncias onde o sucesso não pode ser garantido somente pelo esforço humano.", "Quero limitar meu estilo de vida para que possa contribuir com um percentual maior da minha renda.", "Vejo um significado espiritual em fazer coisas práticas.", "Gosto de criar um ambiente onde as pessoas não se sintam sozinhas.", "Oro com confiança sabendo que Deus age em resposta à oração.", "Tenho discernimento ou simplesmente sei que certas coisas são verdadeiras.", "Sei estabelecer alvos e organizar pessoas e recursos para alcançá-los de forma eficiente.", "Tenho grande compaixão pelas pessoas que sofrem.", "Vejo a maioria das ações como certas ou erradas, e sinto-me na obrigação de corrigir as erradas.", "Posso providenciar às pessoas apoio e atenção a longo prazo.", "Gosto de estudar a Bíblia sistematicamente.", "Posso antecipar prováveis consequências da ação de um indivíduo ou de um grupo.", "Gosto de ajudar organizações ou grupos a se tornarem mais eficientes.", "Sei relacionar-me com outras pessoas respeitando as diferenças culturais.", "Honro a Deus com minhas habilidades artesanais.", "Utilizo várias expressões artísticas para comunicar a verdade de Deus.", "Recebo afirmação de outras pessoas quanto à confiança em meu discernimento ou percepção.", "Fortaleço aqueles que estão vacilando na fé.", "Falo abertamente que sou crente e gosto que as pessoas perguntem acerca de minha fé.", "Tenho plena certeza da presença e ação de Deus em minha vida diariamente.", "Fico contente em saber que minha contribuição financeira é significativa na vida e no ministério do povo de Deus.", "Gosto de achar tarefas pequenas para realizá-las, e frequentemente as faço sem ninguém pedir.", "Gosto de receber pessoas em minha casa.", "Quando sei de uma necessidade, sinto-me constrangido a orar.", "Às vezes sei coisas sobre outras pessoas, sem saber exatamente como obtive tal informação.", "Estimulo outras pessoas a fazerem o melhor de si.", "Posso enxergar além das deficiências e problemas de uma pessoa, e ver uma vida com a qual Deus se importa.", "Gosto de pessoas honestas e que falam a verdade.", "Gosto de dar direção e apoio prático a um grupo pequeno.", "Sei comunicar as Escrituras, de forma que os ouvintes estejam motivados a estudar e aprender mais.", "Dou conselho prático capaz de ajudar as pessoas que se encontram em situações difíceis.", "Gosto de aprender como as organizações funcionam.", "Gosto de iniciar novos empreendimentos.", "Tenho jeito para trabalhar com as mãos e gosto de fazer isso.", "Sou criativo e tenho imaginação.", "Sei identificar pregações, ensino ou comunicação que não batem com a verdade bíblica.", "Gosto de motivar as pessoas a darem passos de crescimento espiritual.", "Digo aberta e claramente o que Cristo fez por mim.", "Normalmente, desafio as pessoas a confiarem em Deus.", "Contribuo liberalmente devido ao meu compromisso como mordomo de Cristo.", "Sinto-me bem auxiliando as pessoas a fazerem suas tarefas de forma eficiente.", "Faço o que for possível para que as pessoas se sintam parte do grupo.", "Sinto-me honrado quando alguém me pede oração.", "Enquanto leio ou estudo a Bíblia, descubro verdades bíblicas importantes que beneficiam outros no corpo de Cristo.", "Sei expor uma visão de modo que as pessoas queiram fazer parte no empreendimento.", "Gosto de trazer esperança e alegria às pessoas que se encontram em situações difíceis.", "Proclamo a verdade de Deus, mesmo em lugares onde ela não é popular ou aceita.", "Consigo ajudar os desviados a voltarem a Cristo.", "Sei passar às pessoas informações e habilidades num nível que seja fácil de compreender e aplicar.", "Posso aplicar verdades bíblicas de modo que outros achem prático e eficaz.", "Consigo imaginar um evento a ser realizado, antecipando os problemas e desenvolvendo formas de resolvê-los.", "Posso administrar e supervisionar vários ministérios da igreja.", "Posso planejar e construir coisas que ajudam a igreja.", "Regularmente, preciso estar a sós para refletir e desenvolver minha imaginação.", "Posso perceber quando poderes demoníacos estão agindo em uma situação ou pessoa.", "Posso desafiar ou repreender as pessoas para estimular o crescimento espiritual.", "Procuro oportunidades para conversar com descrentes sobre coisas espirituais.", "Posso ir em frente, apesar da oposição ou falta de apoio, quando percebo a bênção de Deus sobre um empreendimento.", "Acredito que o Senhor tem me dado recursos em abundância para que eu possa contribuir mais para a obra do Senhor.", "Estou disposto a utilizar meus talentos (naturais ou adquiridos) para ajudar conforme for necessário.", "Consigo fazer as pessoas se sentirem à vontade em ambientes desconhecidos.", "Frequentemente, vejo resultados específicos como respostas diretas das minhas orações.", "Compartilho, confiantemente, meu conhecimento e minhas percepções com os outros.", "Enxergo para onde devemos ir e sei planejar os passos para chegarmos lá.", "Gosto de fazer algo prático por pessoas necessitadas.", "Quando percebo uma situação de pecado, sinto-me compelido a denunciá-lo e desafiar as pessoas envolvidas ao arrependimento.", "Gosto de nutrir as pessoas em processo de crescimento espiritual, com paciência, mas com firmeza.", "Gosto de dar explicação às pessoas sobre coisas que possam fazê-las crescer espiritual e pessoalmente.", "Penso em soluções de problemas que, normalmente, as pessoas não pensam."
     ];
-    const categories = ["Administração", "Apostolado", "Habilidade Manual", "Comunicação Criativa", "Discernimento", "Aconselhamento", "Evangelismo", "Fé", "Contribuição", "Ajuda", "Hospitalidade", "Oração", "Conhecimento", "Liderança", "Misericórdia", "Profecia", "Pastor", "Ensino", "Sabedoria"];
+
+    const giftCategories = [
+        "Administração", "Apostolado – Plantador de Igrejas", "Habilidade Manual", "Comunicação Criativa", 
+        "Discernimento", "Aconselhamento", "Evangelismo", "Fé", "Contribuição", "Ajuda", 
+        "Hospitalidade", "Oração", "Conhecimento", "Liderança", "Misericórdia", "Profecia", 
+        "Pastor", "Ensino", "Sabedoria"
+    ];
 
     const container = document.getElementById('questions-container');
-    questions.forEach((q, i) => {
-        const div = document.createElement('div');
-        div.className = 'question-card'; div.id = `q-${i}`;
-        div.innerHTML = `<div class="question-text">${i+1}. ${q}</div><div class="options-group">
-            ${[0,1,2,3].map(v => `<label class="radio-label">${v}<input type="radio" name="r${i}" value="${v}" required onchange="document.getElementById('q-${i}').classList.remove('error-highlight')"></label>`).join('')}
-        </div>`;
-        container.appendChild(div);
+
+    window.removerErro = function(cardId) {
+        document.getElementById(cardId).classList.remove('error-highlight');
+    };
+
+    // Gerar questões
+    questionsText.forEach((q, index) => {
+        const questionNum = index + 1;
+        const card = document.createElement('div');
+        card.id = `card-${index}`;
+        card.className = 'question-card';
+        card.innerHTML = `
+            <div class="question-text">${questionNum}. ${q}</div>
+            <div class="options-group">
+                <label class="radio-label">0 <input type="radio" name="q${index}" value="0" onchange="removerErro('card-${index}')"></label>
+                <label class="radio-label">1 <input type="radio" name="q${index}" value="1" onchange="removerErro('card-${index}')"></label>
+                <label class="radio-label">2 <input type="radio" name="q${index}" value="2" onchange="removerErro('card-${index}')"></label>
+                <label class="radio-label">3 <input type="radio" name="q${index}" value="3" onchange="removerErro('card-${index}')"></label>
+            </div>
+        `;
+        container.appendChild(card);
     });
 
-    document.getElementById('gifts-form').onsubmit = (e) => {
+    document.getElementById('gifts-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        const nome = document.getElementById('p_nome').value;
+        
+        const nomeUsuario = document.getElementById('nome-usuario').value;
         let scores = new Array(19).fill(0);
-        let log = '';
-        let missing = false;
+        let isValid = true;
+        let primeiroErroId = null;
+        let logHtml = ''; // NOVO: Variável para armazenar o gabarito
 
-        for(let i=0; i<questions.length; i++){
-            const rb = document.querySelector(`input[name="r${i}"]:checked`);
-            if(!rb){ 
-                document.getElementById(`q-${i}`).classList.add('error-highlight'); 
-                if(!missing) { window.scrollTo({top: document.getElementById(`q-${i}`).offsetTop - 20, behavior: 'smooth'}); missing = true; }
-            } else {
-                scores[i % 19] += parseInt(rb.value);
-                log += `<div class="log-box">${i+1} - ${rb.value}</div>`;
+        const errorBox = document.getElementById('error-box');
+        errorBox.style.display = 'none';
+
+        // Validação
+        for (let i = 0; i < questionsText.length; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            const card = document.getElementById(`card-${i}`);
+            
+            if (!selected) {
+                isValid = false;
+                card.classList.add('error-highlight');
+                if (!primeiroErroId) {
+                    primeiroErroId = `card-${i}`;
+                }
             }
         }
 
-        if(missing) return;
+        if (!isValid || !nomeUsuario) {
+            errorBox.style.display = 'block';
+            if (primeiroErroId) {
+                const elementoErro = document.getElementById(primeiroErroId);
+                const y = elementoErro.getBoundingClientRect().top + window.pageYOffset - 20;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+            return;
+        }
 
-        document.getElementById('res-nome').innerText = nome;
-        document.getElementById('res-data').innerText = new Date().toLocaleString();
-        document.getElementById('res-log').innerHTML = log;
+        // Calcula notas e constrói o gabarito
+        for (let i = 0; i < questionsText.length; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            const categoryIndex = i % 19;
+            scores[categoryIndex] += parseInt(selected.value);
+            
+            // NOVO: Adiciona a resposta ao log do gabarito
+            logHtml += `<div class="log-item">${i + 1} - ${selected.value}</div>`;
+        }
 
-        let results = categories.map((n, i) => ({n, s: scores[i]})).sort((a,b) => b.s - a.s);
-        document.getElementById('top-list').innerHTML = results.slice(0,3).map((r,i) => `<div class="gift-item-top">${i+1}º ${r.n} (${r.s} pts)</div>`).join('');
-        document.getElementById('other-list').innerHTML = results.slice(3).map((r,i) => `<div class="gift-item-other">${i+4}º: ${r.n} (${r.s})</div>`).join('');
+        // Mapear e ordenar
+        let finalResults = giftCategories.map((name, index) => {
+            return { name: name, score: scores[index] };
+        });
+        finalResults.sort((a, b) => b.score - a.score);
+
+        // Preencher Nome e Data
+        document.getElementById('display-name').innerText = nomeUsuario;
+        document.getElementById('data-teste').innerText = new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR');
+
+        // Exibir Top 3
+        const topGiftsList = document.getElementById('top-gifts-list');
+        topGiftsList.innerHTML = '';
+        for(let i = 0; i < 3; i++) {
+            topGiftsList.innerHTML += `<div class="gift-result-top">${i+1}º - ${finalResults[i].name} (${finalResults[i].score} pts)</div>`;
+        }
+
+        // Exibir Restante (do 4º ao 19º)
+        const otherGiftsList = document.getElementById('other-gifts-list');
+        otherGiftsList.innerHTML = '';
+        for(let i = 3; i < finalResults.length; i++) {
+            otherGiftsList.innerHTML += `<div class="gift-result-other">${i+1}º: ${finalResults[i].name} (${finalResults[i].score})</div>`;
+        }
+
+        // NOVO: Inserir o gabarito na tela
+        document.getElementById('log-grid').innerHTML = logHtml;
         
         document.getElementById('results').style.display = 'block';
-        window.scrollTo({top: document.getElementById('results').offsetTop - 20, behavior: 'smooth'});
-    };
+        window.scrollTo({ top: document.getElementById('results').offsetTop - 20, behavior: 'smooth' });
+    });
 </script>
+
 </body>
 </html>
