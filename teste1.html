@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levantamento de Dons Espirituais I</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .instructions {
+            background-color: #eef2f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .question-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+            transition: box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .radio-label:hover {
+            background-color: #f1f5f9;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        #results {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .gift-result {
+            font-size: 1.5em;
+            color: #166534;
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .pastor-note {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #b45309;
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            color: #dc2626;
+            background: #fee2e2;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Teste de Dons Espirituais I</h1>
+    
+    <div class="instructions">
+        <strong>Instruções:</strong><br>
+        Responda a cada afirmação utilizando a escala abaixo. Responda de acordo com o que você realmente é, não como quem você acha que deveria ser. Estas afirmações expressam a verdade sobre você? Até que ponto refletem suas tendências naturais?<br><br>
+        <strong>3</strong> = Constantemente, definitivamente certo.<br>
+        <strong>2</strong> = A maioria das vezes, normalmente certo.<br>
+        <strong>1</strong> = Algumas vezes, de vez em quando.<br>
+        <strong>0</strong> = Nunca, jamais.
+    </div>
+
+    <form id="gifts-form">
+        <div id="questions-container"></div>
+        <div id="error-box" class="error-message">Por favor, responda todas as perguntas antes de finalizar.</div>
+        <button type="submit" class="submit-btn">Calcular Meus Dons</button>
+    </form>
+
+    <div id="results">
+        <h2>Seus 3 Dons Principais:</h2>
+        <div id="top-gifts-list"></div>
+        <div class="pastor-note">
+            Procure o Pastor da Igreja e converse com ele sobre o seu teste de dons para verificar em qual ministério você poderá servir para o engrandecimento do Corpo de Cristo.
+        </div>
+    </div>
+</div>
+
+<script>
+    const questionsText = [
+        "Gosto de organizar pessoas, tarefas e eventos",
+        "Gostaria de iniciar igrejas em lugares onde elas não existam.",
+        "Gosto de trabalhar criativamente com madeira, tecido, tinta, metal, vidro ou outros materiais.",
+        "Gosto de desafiar a perspectiva que as pessoas têm de Deus através de variadas formas de arte.",
+        "Posso distinguir com facilidade entre verdade e erro espiritual, entre o bem e o mal.",
+        "Normalmente, vejo o potencial das pessoas.",
+        "Comunico o evangelho com clareza e de modo eficaz.",
+        "Acho natural e fácil confiar em Deus para responder às minhas orações.",
+        "Contribuo, liberalmente e com alegria, para pessoas com necessidades financeiras ou para projetos que requerem verba.",
+        "Gosto de trabalhar na retaguarda apoiando o trabalho dos outros.",
+        "Encaro meu lar como lugar de ministração às pessoas necessitadas.",
+        "Recebo pedidos de oração de outras pessoas e oro por elas regularmente.",
+        "As pessoas pedem a minha opinião sobre uma passagem ou verdade bíblica.",
+        "Consigo motivar pessoas a atingirem um alvo.",
+        "Identifico-me com as pessoas que estão sofrendo, e desejo ajudá-las no processo de restauração.",
+        "Posso falar de forma a criar convicção e mudança nas vidas dos outros.",
+        "Gosto de gastar tempo nutrindo e cuidando das pessoas.",
+        "Consigo comunicar a Palavra de Deus de modo eficaz.",
+        "Frequentemente, as pessoas me procuram para conselho sobre assuntos espirituais ou pessoais.",
+        "Sou cuidadoso, completo e habilitado em administrar detalhes.",
+        "A ideia de servir em outro país ou comunidade é muito interessante para mim.",
+        "Tenho habilidade em trabalhar com vários tipos de ferramenta.",
+        "Gosto de desenvolver e utilizar minhas habilidades artísticas (arte, drama, música, fotografia, etc.)",
+        "Frequentemente, posso discernir o caráter de uma pessoa baseado apenas nas primeiras impressões.",
+        "Gosto de encorajar e fortalecer aqueles que estão abatidos.",
+        "Procuro, regularmente, oportunidades de construir relacionamentos íntegros com descrentes.",
+        "Tenho confiança na provisão e ajuda contínua de Deus, mesmo em tempos difíceis.",
+        "Contribuo com mais que o dízimo para que o trabalho do reino de Deus seja realizado.",
+        "Gosto de fazer coisas rotineiras que apoiem o ministério.",
+        "Gosto de conhecer pessoas novas e de ajudá-las a se sentirem bem-vindas.",
+        "Gosto de passar períodos longos em oração e recebo direção quanto aos assuntos que Deus quer que leve a Ele.",
+        "Recebo informações do Espírito que não adquiri por meios naturais.",
+        "Posso influenciar pessoas a alcançarem uma visão.",
+        "Consigo apoiar pacientemente aqueles que atravessam experiências dolorosas, enquanto eles tentam normalizar suas vidas.",
+        "Sinto-me responsável por confrontar as pessoas com a verdade.",
+        "Tenho compaixão pelos crentes que vacilam na fé, e tendo a protegê-los.",
+        "Posso passar tempo estudando, sabendo que a apresentação da verdade fará diferença na vida das pessoas.",
+        "Frequentemente, encontro soluções simples e práticas no meio do conflito ou confusão.",
+        "Sei esclarecer os alvos e desenvolver estratégias para realizá-los.",
+        "Estou disposto a ter um papel ativo no começo de uma nova igreja.",
+        "Gosto de fazer (fabricar) coisas para serem usadas no ministério.",
+        "Ajudo pessoas através da expressão artística a entenderem melhor a si mesmas, seus relacionamentos e a pessoa de Deus.",
+        "Percebo falsidade ou engano antes que seja evidente para outras pessoas.",
+        "Estimulo a esperança nos outros, direcionando-os às promessas de Deus.",
+        "Tenho uma maneira de adaptar o evangelho para que seja relevante às necessidades da pessoa.",
+        "Creio que Deus me ajudará a realizar grandes coisas.",
+        "Administro bem minhas finanças para poder contribuir mais.",
+        "Voluntariamente, assumo tarefas complicadas na igreja para suprir as necessidades dos outros.",
+        "Acredito, verdadeiramente, que o Senhor me envia pessoas desconhecidas para que eu as apresente a outras pessoas.",
+        "Sou consciente da ministração aos outros, enquanto oro.",
+        "Sou comprometido e disponho de tempo para leitura e estudo das Escrituras, a fim de entender as verdades bíblicas.",
+        "Sei ajustar meu estilo de liderança para que outros façam o melhor de si.",
+        "Gosto de ajudar as pessoas que são consideradas inúteis ou sem esperança.",
+        "Exponho, com ousadia, as tendências culturais, os ensinos ou eventos que contradizem os princípios bíblicos.",
+        "Gosto de ajudar a pessoa como um todo, social, emocional, espiritualmente, etc.",
+        "Presto muita atenção às palavras, frases e os significados das pessoas que ensinam.",
+        "Tenho facilidade de selecionar o modo de agir mais eficaz dentre várias alternativas.",
+        "Posso identificar e usar os recursos necessários para realizar uma tarefa de forma eficiente.",
+        "Tenho facilidade em adaptar-me aos ambientes e culturas diferentes.",
+        "Posso visualizar como uma coisa deverá ser construída antes de fazê-la.",
+        "Gosto de encontrar maneiras novas e interessantes para comunicar a verdade de Deus.",
+        "Percebo as coisas certas e erradas nas situações.",
+        "Tento encorajar as pessoas que precisam dar passos corajosos na sua fé, família ou vida.",
+        "Convido descrentes a aceitar Cristo como Salvador.",
+        "Confio em Deus, nas circunstâncias onde o sucesso não pode ser garantido somente pelo esforço humano.",
+        "Quero limitar meu estilo de vida para que possa contribuir com um percentual maior da minha renda.",
+        "Vejo um significado espiritual em fazer coisas práticas.",
+        "Gosto de criar um ambiente onde as pessoas não se sintam sozinhas.",
+        "Oro com confiança sabendo que Deus age em resposta à oração.",
+        "Tenho discernimento ou simplesmente sei que certas coisas são verdadeiras.",
+        "Sei estabelecer alvos e organizar pessoas e recursos para alcançá-los de forma eficiente.",
+        "Tenho grande compaixão pelas pessoas que sofrem.",
+        "Vejo a maioria das ações como certas ou erradas, e sinto-me na obrigação de corrigir as erradas.",
+        "Posso providenciar às pessoas apoio e atenção a longo prazo.",
+        "Gosto de estudar a Bíblia sistematicamente.",
+        "Posso antecipar prováveis consequências da ação de um indivíduo ou de um grupo.",
+        "Gosto de ajudar organizações ou grupos a se tornarem mais eficientes.",
+        "Sei relacionar-me com outras pessoas respeitando as diferenças culturais.",
+        "Honro a Deus com minhas habilidades artesanais.",
+        "Utilizo várias expressões artísticas para comunicar a verdade de Deus.",
+        "Recebo afirmação de outras pessoas quanto à confiança em meu discernimento ou percepção.",
+        "Fortaleço aqueles que estão vacilando na fé.",
+        "Falo abertamente que sou crente e gosto que as pessoas perguntem acerca de minha fé.",
+        "Tenho plena certeza da presença e ação de Deus em minha vida diariamente.",
+        "Fico contente em saber que minha contribuição financeira é significativa na vida e no ministério do povo de Deus.",
+        "Gosto de achar tarefas pequenas para realizá-las, e frequentemente as faço sem ninguém pedir.",
+        "Gosto de receber pessoas em minha casa.",
+        "Quando sei de uma necessidade, sinto-me constrangido a orar.",
+        "Às vezes sei coisas sobre outras pessoas, sem saber exatamente como obtive tal informação.",
+        "Estimulo outras pessoas a fazerem o melhor de si.",
+        "Posso enxergar além das deficiências e problemas de uma pessoa, e ver uma vida com a qual Deus se importa.",
+        "Gosto de pessoas honestas e que falam a verdade.",
+        "Gosto de dar direção e apoio prático a um grupo pequeno.",
+        "Sei comunicar as Escrituras, de forma que os ouvintes estejam motivados a estudar e aprender mais.",
+        "Dou conselho prático capaz de ajudar as pessoas que se encontram em situações difíceis.",
+        "Gosto de aprender como as organizações funcionam.",
+        "Gosto de iniciar novos empreendimentos.",
+        "Tenho jeito para trabalhar com as mãos e gosto de fazer isso.",
+        "Sou criativo e tenho imaginação.",
+        "Sei identificar pregações, ensino ou comunicação que não batem com a verdade bíblica.",
+        "Gosto de motivar as pessoas a darem passos de crescimento espiritual.",
+        "Digo aberta e claramente o que Cristo fez por mim.",
+        "Normalmente, desafio as pessoas a confiarem em Deus.",
+        "Contribuo liberalmente devido ao meu compromisso como mordomo de Cristo.",
+        "Sinto-me bem auxiliando as pessoas a fazerem suas tarefas de forma eficiente.",
+        "Faço o que for possível para que as pessoas se sintam parte do grupo.",
+        "Sinto-me honrado quando alguém me pede oração.",
+        "Enquanto leio ou estudo a Bíblia, descubro verdades bíblicas importantes que beneficiam outros no corpo de Cristo.",
+        "Sei expor uma visão de modo que as pessoas queiram fazer parte no empreendimento.",
+        "Gosto de trazer esperança e alegria às pessoas que se encontram em situações difíceis.",
+        "Proclamo a verdade de Deus, mesmo em lugares onde ela não é popular ou aceita.",
+        "Consigo ajudar os desviados a voltarem a Cristo.",
+        "Sei passar às pessoas informações e habilidades num nível que seja fácil de compreender e aplicar.",
+        "Posso aplicar verdades bíblicas de modo que outros achem prático e eficaz.",
+        "Consigo imaginar um evento a ser realizado, antecipando os problemas e desenvolvendo formas de resolvê-los.",
+        "Posso administrar e supervisionar vários ministérios da igreja.",
+        "Posso planejar e construir coisas que ajudam a igreja.",
+        "Regularmente, preciso estar a sós para refletir e desenvolver minha imaginação.",
+        "Posso perceber quando poderes demoníacos estão agindo em uma situação ou pessoa.",
+        "Posso desafiar ou repreender as pessoas para estimular o crescimento espiritual.",
+        "Procuro oportunidades para conversar com descrentes sobre coisas espirituais.",
+        "Posso ir em frente, apesar da oposição ou falta de apoio, quando percebo a bênção de Deus sobre um empreendimento.",
+        "Acredito que o Senhor tem me dado recursos em abundância para que eu possa contribuir mais para a obra do Senhor.",
+        "Estou disposto a utilizar meus talentos (naturais ou adquiridos) para ajudar conforme for necessário.",
+        "Consigo fazer as pessoas se sentirem à vontade em ambientes desconhecidos.",
+        "Frequentemente, vejo resultados específicos como respostas diretas das minhas orações.",
+        "Compartilho, confiantemente, meu conhecimento e minhas percepções com os outros.",
+        "Enxergo para onde devemos ir e sei planejar os passos para chegarmos lá.",
+        "Gosto de fazer algo prático por pessoas necessitadas.",
+        "Quando percebo uma situação de pecado, sinto-me compelido a denunciá-lo e desafiar as pessoas envolvidas ao arrependimento.",
+        "Gosto de nutrir as pessoas em processo de crescimento espiritual, com paciência, mas com firmeza.",
+        "Gosto de dar explicação às pessoas sobre coisas que possam fazê-las crescer espiritual e pessoalmente.",
+        "Penso em soluções de problemas que, normalmente, as pessoas não pensam."
+    ];
+
+    const giftCategories = [
+        "Administração", "Apostolado – Plantador de Igrejas", "Habilidade Manual", "Comunicação Criativa", 
+        "Discernimento", "Aconselhamento", "Evangelismo", "Fé", "Contribuição", "Ajuda", 
+        "Hospitalidade", "Oração", "Conhecimento", "Liderança", "Misericórdia", "Profecia", 
+        "Pastor", "Ensino", "Sabedoria"
+    ];
+
+    const container = document.getElementById('questions-container');
+
+    // Gerar HTML das questões dinamicamente
+    questionsText.forEach((q, index) => {
+        const questionNum = index + 1;
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+            <div class="question-text">${questionNum}. ${q}</div>
+            <div class="options-group">
+                <label class="radio-label"><input type="radio" name="q${index}" value="3"> 3 - Constantemente, definitivamente certo</label>
+                <label class="radio-label"><input type="radio" name="q${index}" value="2"> 2 - A maioria das vezes, normalmente certo</label>
+                <label class="radio-label"><input type="radio" name="q${index}" value="1"> 1 - Algumas vezes, de vez em quando</label>
+                <label class="radio-label"><input type="radio" name="q${index}" value="0"> 0 - Nunca, jamais</label>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+
+    document.getElementById('gifts-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let scores = new Array(19).fill(0);
+        let allAnswered = true;
+
+        for (let i = 0; i < questionsText.length; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!selected) {
+                allAnswered = false;
+                break;
+            }
+            // A lógica matemática exata da tabela do Word: a categoria é definida pelo índice mod 19
+            const categoryIndex = i % 19;
+            scores[categoryIndex] += parseInt(selected.value);
+        }
+
+        const errorBox = document.getElementById('error-box');
+        if (!allAnswered) {
+            errorBox.style.display = 'block';
+            window.scrollTo({ top: errorBox.offsetTop - 100, behavior: 'smooth' });
+            return;
+        }
+
+        errorBox.style.display = 'none';
+
+        // Mapear pontuações com os nomes dos dons e ordenar do maior para o menor
+        let finalResults = giftCategories.map((name, index) => {
+            return { name: name, score: scores[index] };
+        });
+
+        finalResults.sort((a, b) => b.score - a.score);
+
+        // Exibir os top 3
+        const topGiftsList = document.getElementById('top-gifts-list');
+        topGiftsList.innerHTML = '';
+        
+        for(let i = 0; i < 3; i++) {
+            topGiftsList.innerHTML += `<div class="gift-result">${i+1}º - ${finalResults[i].name} (Pontuação: ${finalResults[i].score})</div>`;
+        }
+
+        document.getElementById('results').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('results').offsetTop - 50, behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
